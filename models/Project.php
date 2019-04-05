@@ -30,6 +30,7 @@ class Project extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'], 'required'],
             [['manager_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['manager_id' => 'id']],
@@ -62,5 +63,11 @@ class Project extends \yii\db\ActiveRecord
     public function getTasks()
     {
         return $this->hasMany(Task::className(), ['project_id' => 'id']);
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->manager_id = Yii::$app->user->id;
+        return parent::beforeSave($insert);
     }
 }

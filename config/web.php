@@ -55,6 +55,15 @@ $config = [
             'rules' => [
                 'OPTIONS' => 'rest/options',
                 'POST /api/signin' => 'user/signin',
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'project',
+                    'pluralize' => false,
+                    'prefix' => 'api',
+                    'extraPatterns' => [
+                        'POST create' => 'create',
+                    ],
+                ],
             ],
         ],
 
