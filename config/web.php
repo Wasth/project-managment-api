@@ -66,6 +66,19 @@ $config = [
                         'DELETE delete/{id}' => 'delete',
                     ],
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'task',
+                    'pluralize' => false,
+                    'prefix' => 'api',
+                    'extraPatterns' => [
+                        'POST create/<project_id>' => 'create',
+                        'PATCH <task_id>/set-worker/<worker_id>' => 'set-worker',
+                        'PATCH <task_id>/set-moderation' => 'set-moderation',
+                        'PATCH <task_id>/set-done' => 'set-done',
+                        'DELETE <task_id>/delete' => 'delete',
+                    ],
+                ],
             ],
         ],
 
