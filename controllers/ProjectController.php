@@ -94,4 +94,22 @@ class ProjectController extends RestController
             'message' => 'Project not found',
         ];
     }
+
+    public function actionIndex(){
+        if (Yii::$app->user->identity->role == 'manager') {
+
+            Yii::$app->response->setStatusCode(200, 'Projects list');
+            return [
+                'status' => true,
+                'projects' => Project::find()->where(['manager_id' => Yii::$app->user->id])->all(),
+            ];
+
+        }
+
+        Yii::$app->response->setStatusCode(403, 'Permission denied');
+        return [
+            'status' => false,
+            'message' => 'Permission denied',
+        ];
+    }
 }
