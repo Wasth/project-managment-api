@@ -56,6 +56,7 @@ $config = [
                 'OPTIONS' => 'rest/options',
                 'POST /api/signin' => 'user/signin',
                 'GET /api/workers' => 'user/workers',
+                'POST /api/comment/create/<task_id>' => 'comment/create',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'project',

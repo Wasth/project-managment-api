@@ -9,12 +9,25 @@
 namespace app\controllers;
 
 
+use app\filters\MyBearerAuth;
 use app\models\User;
 use Yii;
 
 class UserController extends RestController
 {
     public $modelClass = 'app\models\User';
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['bearerAuth'] = [
+            'class' => MyBearerAuth::className(),
+            'only' => ['workers']
+        ];
+
+        return $behaviors;
+    }
 
     public function actions()
     {
@@ -60,11 +73,12 @@ class UserController extends RestController
     }
 
     public function actionWorkers() {
+//        var_dump(Yii::$app->user->identity->role);
         if(Yii::$app->user->identity->role == 'manager'){
             Yii::$app->response->setStatusCode(200, 'Workers list');
             return [
                 'status' => true,
-                'workers' => User::find()->where(['role' => 'workers'])->all(),
+                'workers' => User::find()->where(['role' => 'worker'])->all(),
             ];
         }
 

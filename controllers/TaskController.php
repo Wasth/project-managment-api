@@ -52,7 +52,7 @@ class TaskController extends RestController
 
                 if ($task->load(Yii::$app->request->post(), '') && $task->validate()) {
                     $task->project_id = $project_id;
-                    $task->status = 'New';
+                    $task->status = 'new';
                     $task->save(false);
                     Yii::$app->response->setStatusCode(200, 'Successful creation');
                     return [
@@ -134,6 +134,7 @@ class TaskController extends RestController
             if ($task->worker_id == Yii::$app->user->id) {
                 if ($task->status == 'in-work') {
                     $task->status = 'moderation';
+                    $task->save(false);
                     Yii::$app->response->setStatusCode(200, 'Task is in moderation');
                     return [
                         'status' => true,
@@ -164,8 +165,9 @@ class TaskController extends RestController
     {
         if ($task = Task::findOne($task_id)) {
             if ($task->project->manager_id == Yii::$app->user->id) {
-                if ($task->status == 'in-work') {
+                if ($task->status == 'moderation') {
                     $task->status = 'done';
+                    $task->save();
                     Yii::$app->response->setStatusCode(200, 'Task done');
                     return [
                         'status' => true,
