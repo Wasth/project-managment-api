@@ -69,8 +69,29 @@ class ProjectController extends RestController
         ];
     }
 
-    public function actionDelete()
+    public function actionDelete($id)
     {
+        if($project = Project::findOne($id)) {
+            if($project->manager_id != Yii::$app->user->id){
+                $project->delete();
 
+                Yii::$app->response->setStatusCode(204, 'Successful delete');
+                return [
+                    'status' => true,
+                    'message' => 'Successful delete',
+                ];
+            }
+            Yii::$app->response->setStatusCode(403, 'Permission denied');
+            return [
+                'status' => false,
+                'message' => 'Permission denied',
+            ];
+        }
+
+        Yii::$app->response->setStatusCode(404, 'Project not found');
+        return [
+            'status' => false,
+            'message' => 'Project not found',
+        ];
     }
 }
