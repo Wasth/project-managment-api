@@ -62,6 +62,7 @@ $config = [
                     'prefix' => 'api',
                     'extraPatterns' => [
                         'POST create' => 'create',
+                        'DELETE delete/{id}' => 'delete',
                     ],
                 ],
             ],

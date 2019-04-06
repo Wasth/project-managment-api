@@ -72,7 +72,7 @@ class ProjectController extends RestController
     public function actionDelete($id)
     {
         if($project = Project::findOne($id)) {
-            if($project->manager_id != Yii::$app->user->id){
+            if($project->manager_id == Yii::$app->user->id){
                 $project->delete();
 
                 Yii::$app->response->setStatusCode(204, 'Successful delete');
