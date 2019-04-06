@@ -59,4 +59,19 @@ class UserController extends RestController
         ];
     }
 
+    public function actionWorkers() {
+        if(Yii::$app->user->identity->role == 'manager'){
+            Yii::$app->response->setStatusCode(200, 'Workers list');
+            return [
+                'status' => true,
+                'workers' => User::find()->where(['role' => 'workers'])->all(),
+            ];
+        }
+
+        Yii::$app->response->setStatusCode(403, 'Permission denied');
+        return [
+            'status' => false,
+            'message' => 'Permission denied',
+        ];
+    }
 }
